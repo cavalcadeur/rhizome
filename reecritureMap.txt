@@ -1,0 +1,31 @@
+DONE :
+	action
+	alert
+	clic
+	colors
+	hitspot
+	draw
+	editDifferences
+	gamePad
+	help
+	inventaire
+	liste
+	map
+	monstres
+    Painter
+	particles
+    pathFinder
+	pencil
+
+	data/animation
+	data/items
+
+	ennemis/general
+	ennemis/cochon
+
+ATTENTION : j'ai fait le pari que le fichier IA.js était inutile avec la nouvelle classe ennemis. Mais rien n'est moins sûr.
+ATTENTION : le système de sauvegarde est à repenser.
+ATTENTION : les switchs de couleur ne marchent pas
+
+DONE : Il faut permettre l'import export de données 
+DONE : l'équilibrage de l'arbre n'est pas encore fonctionnel

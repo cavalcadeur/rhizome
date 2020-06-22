@@ -1,0 +1,30 @@
+ --  0.0.1  --
+
+- separation en moteur/data (réussie ??? NON)
+- animation déplacement
+- animation saut    
+- musique     N
+- Système de stockage sous forme d'arbre
+
+  635 m^2
+
+ -- TO DO --
+
+- ile de l'aurore
+- reaction command
+- caverne secrete aurore
+- cycle jour/nuit
+- fondu de la musique
+- créatures marines
+- maisons skulltullas
+- particules de vie
+- intro
+
+ -- Lexique --
+
+C : compatible avec le pinceau
+A : compatibilité améliorable
+N : non compatible et source de bugs
+H : caché dans le code / non visible lors d'une partie normale
+I : invalidé par une méthode plus efficace
+B : bugué as fuck
