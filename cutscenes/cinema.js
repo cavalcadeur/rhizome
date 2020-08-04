@@ -2,7 +2,7 @@ function cTitre(){
     setColors(out,"jour");
     Map.updateGroundTotal();
     disalert();
-    imgCinema[2] = [-450,-1400,1,1,[],0];
+    imgCinema[2] = [250,-1000,1,1,[],0];
     var trucMuche = [imgDebris.flamme0,imgDebris.fumeeF,imgDebris.fumeeF,imgDebris.fumeeF,imgDebris.fumeeF,imgDebris.fumeeF,imgDebris.fumeeF,imgDebris.fumeeM,imgDebris.fumeeF,imgDebris.sword2,imgHeros[34],imgHeros[2],imgHeros[6],imgElement.palmier,imgDebris.fumeeF,imgDebris.fumeeF,imgDebris.pale0];
     for (var i = 0; i < 0; i++){
         imgCinema[2][4].push([rnd(W),-rnd(500),0,4,trucMuche[rnd(trucMuche.length)]]);
@@ -97,7 +97,7 @@ function cTitre(){
             animation();
         }
         else if (imgCinema[1] == "salsonForever"){
-            goToLevel(6,"heart",0,0,0,0);
+            goToLevel(6,"heart2",2,6,0,0);
             cinematicos = 0;
             animation();
         }
@@ -126,6 +126,7 @@ function cClickTitle(){
         if (mouse[1] < W/2 + 200 && mouse[1] > W/2 - 200){
             if (mouse[0] < H/2 + 75 && mouse[0] > H/2 - 75){
                 imgCinema[2][5] = 1;
+                imgCinema[1] = "salsonForever";
             }
             else if (mouse[0] < H/5*4 + 75 && mouse[0] > H/5*4 - 75){
                 loadGame();

@@ -3,7 +3,7 @@
 function setColors(oo,hour){
     let rMod = 1; let gMod = 1; let bMod = 1;
     if (hour == "nuit"){
-        rMod = 0.55; gMod = 0.55; bMod = 0.55;
+        rMod = 0.55; gMod = 0.55; bMod = 0.75;
     }
     else if (hour == "crepuscule"){
         rMod = 1.4; gMod = 0.65; bMod = 0.55;

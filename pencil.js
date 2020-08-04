@@ -142,14 +142,11 @@ function pencil(x,y,action){
         else if (action == "tele"){
             let cObj = Map.getObject(coor[1],coor[0]);
             let truck = cObj[0];
-            let outYY = parseInt(prompt("Id de l'environnement (entre 0 et 9)   (Attention : si vous n'êtes pas le devellopeur de ce jeu, mettez simplement 1 puis ocean puis 15 puis 15)"));
             let gotoYY = prompt("Nom de la map.");
-            let xYY = parseInt(prompt("Position en x"));
-            let yYY = parseInt(prompt("Position en y"));
             if (truck == "house0" || truck == "house1" || (truck == "spe4" && out == 1) || truck == "tele"){
                 Map.replaceObject(coor[1],coor[0],[truck,outYY,gotoYY,xYY,yYY],true);
             }
-            else Map.replaceObject(coor[1],coor[0],["teleport",outYY,gotoYY,xYY,yYY],true);
+            else Map.replaceObject(coor[1],coor[0],["teleport",gotoYY],true);
         }
         else if (action == "passerelle0" || action == "passerelle1" || action == "passerelle2" || action == "passerelle3"){
             var cObj = Map.getObject(coor[1],coor[0]);

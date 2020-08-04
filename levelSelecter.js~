@@ -1,0 +1,7 @@
+// Fichier pour la selection de l'environnement à explorer. On a besoin de fonctions d'affichage, d'interaction, de changement de mode et de sauvegarde.
+
+let lvlAvailable = [[6,"heart"]];
+
+function lvlSelecter(t){
+    
+}

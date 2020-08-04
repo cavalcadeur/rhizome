@@ -34,8 +34,6 @@ let imgArme = {};
 let imgMonstre = {};
 let imgPersoN = {};
 let particles = [];
-let imgBoat = new Image();
-imgBoat.src = "images/heros/boat.png";
 let figer = 0;
 let edition = 0;
 let scrollX = 0;
@@ -54,7 +52,6 @@ let editArray;
 let onSea = 0;
 let waves = [];
 let goto = "";
-let boatPosition = [200,100];
 let onSeaIsland = [];
 let casePencil = [0,0];
 let editM = 0;
@@ -69,7 +66,7 @@ let fondInvent = new Image();
 fondInvent.src = "images/menu4.png";
 let imgCinema = [new Image,new Image,[]];
 let cinematicos = 0;
-let sideEdit = ["monsters","spe","sky","fireTemple","inDoor","herbe0","outDoor","special","gear","loot"];
+let sideEdit = ["monsters","spe","sky","fireTemple","inDoor","herbe0","outDoor","special","gear","switch1"];
 let sideSelect = -1;
 let workFloor;
 let backg;
@@ -78,7 +75,6 @@ let nPas = 0;
 let rigolote = [-1,-1];
 let gamePads;
 let gameKey = [];
-let sensDuBateau = 1;
 let colors = [];
 let touchCount = 0;
 let editNs = [0,3,0,0];
@@ -267,19 +263,19 @@ function start(){
     canvas = document.querySelector("#canvas");
     ctx = canvas.getContext("2d");
     backg = new background(ctx);
-    backDraw = backg.fa;
+    backDraw = backg.ff;
     W = canvas.width;
     H = canvas.height;
     actx.play();
     actx.loop = true;
     ctx.imageSmoothingEnabled = true;
-    Map.goOut(1);
-    mapState = Map.goto("ocean",mapState);
-    goto = "ocean";
-    out = 1;
+    Map.goOut(6);
+    mapState = Map.goto("heart2",mapState);
+    goto = "heart2";
+    out = 6;
     
     init();
-    setColors(out,5);
+    setColors(out,"noir");
     Painter.niveau( Map , iles["depart"].textures);
     resize();
     document.addEventListener(
@@ -305,7 +301,7 @@ function start(){
             if (onSea == 4) inventclick(x,y);
             else if (onSea == 5) TPclick(x,y);
             else if (edition == 0) {
-                clicPlayerTwo(x,y,heros);
+                growRhizome(x,y,event.button);
                 return;
             }
             if (onSea == 0){
@@ -421,7 +417,7 @@ function animation(){
                 //let loops = 1;
                 //while( loops --> 0 ) {
                 if (onSea == 0) {action(t); draw();gamePadF();}
-                else if (onSea == 1){sail(t);gamePadF();}
+                else if (onSea == 1){lvlSelecter(t);gamePadF();}
                 else if (onSea == 2) {drawSea();gamePadF();}
                 else if (onSea == 4) {drawInvent();gamePadF();}
                 else if (onSea == 5) {TPisland();gamePadF();}

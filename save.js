@@ -24,7 +24,7 @@ function save(){
         nowadays.getHours() + "-" +
         nowadays.getMinutes();
      
-    SaveAs(new Blob([result]),"Cavalcade_" + nowadays + ".txt");
+    SaveAs(new Blob([result]),"Rhizome_" + nowadays + ".txt");
 }
 
 function saveCurrentMap(){

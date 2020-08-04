@@ -1,5 +1,121 @@
+// Toutes les actions qui ont lieu quand le temps n'est pas arrêté. Bachibouzouk.
+
+let delayedEvents = [];
+let nextDelayedEvents = [];
+let delaySec = 20;
+let delayLastOne = 0
+
+
+function growRhizome(x,y,button){
+    let coor = Painter.case(Map,x,y);
+    let cell = Map.getCell(coor[1],coor[0]);
+    if (cell[1] <= -1) return;
+
+    console.log(cell[0]);
+
+    if (typeof(cell[0][0]) == "string"){
+        if (cell[0][0].indexOf("rhizome") == 0 && cell[0][0] != "rhizome0"){
+            Map.suppressObject(coor[1],coor[0],0);
+            lvlCompletion[lvlCurrent] -= 1;
+            return;
+        }
+    }
+    if (taille(cell[0][0]) >= 1){
+        return;
+    }
+    
+    let cell2;
+    for (let i = 0; i < 4; i ++){
+        cell2 = Map.getCell(coor[1] + vecteurs[i][0],coor[0] + vecteurs[i][1]);
+        if (typeof(cell2[0][0]) != "string") continue;
+        if (cell2[0][0].indexOf("rhizome") == 0){
+            if (Math.abs(cell2[1] - cell[1]) <= 1){
+                if (cell[0][0] == "switch0") wireSignal(coor[1],coor[0],1);
+                else if (cell[0][0] == "switch1") wireSignal(coor[1],coor[0],0);
+                else {
+                    Map.setObject(coor[1],coor[0],"rhizome" + (rnd(10) + 1),0);
+                    lvlCompletion[lvlCurrent] += 1;
+                }
+                return;
+            }
+        }        
+    }
+}
+
+function wireSignal(x,y,onOff){
+    let cell = Map.getCell(x,y);
+    if (cell[1] <= -1) return;
+    
+    if (typeof(cell[0][0]) == "string"){    // D'abord on éteint/allume la case.
+        if (cell[0][0].indexOf("wire") == 0){
+            if (cell[0][0] == "wire" + (1 - onOff)) Map.replaceObject(x,y,"wire" + onOff,0);
+            else if (cell[0][0] == "wireGate" + (1 - onOff)) Map.replaceObject(x,y,"wireGate" + onOff,0);
+            else return;
+        }
+        else if (cell[0][0] == "switch" + (1 - onOff)) Map.replaceObject(x,y,"switch" + onOff,0);        
+        else return;
+    }
+    else return;
+
+    let cell2;
+    for (let i = 0; i < 4; i ++){
+        cell2 = Map.getCell(x + vecteurs[i][0],y + vecteurs[i][1]);
+        if (typeof(cell2[0][0]) == "string"){
+            if (cell2[0][0].indexOf("wire") == 0) {
+                if (cell2[0][0] == "wire" + (1-onOff) || cell2[0][0] == "wireGate" + (1-onOff)) nextDelayedEvents.push(["wireSignal",x + vecteurs[i][0],y + vecteurs[i][1],onOff]);
+            }
+        }
+    }
+}
+
+function manageDelayedEvent(e){
+    if (e[0] == "wireSignal"){
+        wireSignal(e[1],e[2],e[3]);
+    }
+}
+
 function action(t){
+    //if (edition == 1) return;
+    // Partie mouvement de la caméra yalalala lala. La.
+    if ((mouse[0] < 25 && mouse[0] > 0 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[0]]) {
+        scrollEditSpeed[1] += scrollEditSpeed[2];
+    }
+    else if ((mouse[0] > H - 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[2]]){
+        scrollEditSpeed[1] -= scrollEditSpeed[2];
+    }
+    else if (scrollEditSpeed[1] != 0){
+        if (scrollEditSpeed[1] > 0) scrollEditSpeed[1] -= scrollEditSpeed[2];
+        if (scrollEditSpeed[1] < 0) scrollEditSpeed[1] += scrollEditSpeed[2];
+        if (Math.abs(scrollEditSpeed[1]) < scrollEditSpeed[2]) scrollEditSpeed[1] = 0;
+    }
+    scrollEditSpeed[1] = Math.min(scrollEditSpeed[3],scrollEditSpeed[1]);
+    scrollEditSpeed[1] = Math.max(-1 * scrollEditSpeed[3],scrollEditSpeed[1]);
+        
+    if ((mouse[1] < 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[3]]) {
+        scrollEditSpeed[0] += scrollEditSpeed[2];
+    }
+    else if ((mouse[1] > W - 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[1]]){
+        scrollEditSpeed[0] -= scrollEditSpeed[2];
+    }
+    else if (scrollEditSpeed[0] != 0){
+        if (scrollEditSpeed[0] > 0) scrollEditSpeed[0] -= scrollEditSpeed[2];
+        if (scrollEditSpeed[0] < 0) scrollEditSpeed[0] += scrollEditSpeed[2];
+        if (Math.abs(scrollEditSpeed[0]) < scrollEditSpeed[2]) scrollEditSpeed[0] = 0;
+    }
+    scrollEditSpeed[0] = Math.min(scrollEditSpeed[3],scrollEditSpeed[0]);
+    scrollEditSpeed[0] = Math.max(-1 * scrollEditSpeed[3],scrollEditSpeed[0]);
+    
+    Painter.scrollPlus(scrollEditSpeed[0],scrollEditSpeed[1],W,H);
     if (edition == 1) return;
+
+    // Partie delayedEvents : EHE !      ["type",x,y,param1,param2, ...]
+    if (t - delayLastOne > delaySec){
+        if (delayedEvents.length >= 50) delayedEvents = [];
+        delayLastOne = t;
+        delayedEvents.forEach(manageDelayedEvent);
+        delayedEvents = JSON.parse(JSON.stringify(nextDelayedEvents));
+        nextDelayedEvents = [];
+    }    
 }
 
 function fall(h,n){

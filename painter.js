@@ -279,6 +279,7 @@ var Painter = function() {
                 ctx.strokeStyle = "#000";
                 ctx.lineWidth = width;
 
+
                 // Tracer les lignes des plateaux.
                 var wall = outline[0];
                 if( wall & 1 ) {
@@ -342,7 +343,7 @@ var Painter = function() {
             // Cette fonction est à revoir elle ne peut pas fonctionner de cette façon il va falloir trouver une astuce ma foi fort sympathique
             // Voici l'astuce. On ne peut pas parcourir toutes les cases mais on va parcourir uniquement celle qui sont visibles grâce à ce formidable scrollCaseX et scrollCaseY
 
-            var result = ["ah","ah"];
+            //var result = ["ah","ah"];
             for (var Y = scrollCaseY + nCasesY - 1;Y >= scrollCaseY;Y -= 1){
                 for (var X = scrollCaseX;X < scrollCaseX + nCasesX;X++){
                     var f = level.getAlti(X,Y);

@@ -8,19 +8,25 @@ function keyDown(keyCode){
         if (figer == 1){
             disalert();
             figer = 0;
-            heros[0].aura = "";
-            heros[1].aura = "";
         }
         return;
     }
     //Crossed.keysPress(event.keyCode);
     if (keys[keyCode] != 1 && cinematicos != 11){
-        if (keyCode == " ") {
-            editHand = editObject[out];
-            drawInterface = AEditInterface;
-            editnumber = 1;
-            editM = 0;
-            if (edition == 0)edition = 1;
+        if (keyCode == " " && keys[keyCode] == 0) {
+            if (edition == 0){
+                editHand = editObject[out];
+                drawInterface = AEditInterface;
+                editnumber = 1;
+                editM = 0;
+                edition = 1;
+            }
+            else if (edition == 1) {
+                edition = 0;
+                drawInterface = AInterface;
+                casePencil = ["ah","ah"];
+                Map.purifie();
+            }
         }
     }
     keys[keyCode] = 1;
@@ -38,10 +44,9 @@ function keyUp(keyCode){
         return;
     }
     if (keyCode == heros[0].touche[5] && onSea == 0) changeArme(0);
-    else if (keyCode == heros[1].touche[5] && onSea == 0) changeArme(1);
     else if ((keyCode == "i" && heros[0].touche[8] == undefined) || keyCode == heros[0].touche[8]) {
-        if (onSea == 0) goInvent();
-        else if (onSea == 4) endInvent();
+        if (onSea == 0) goLvlSelector();
+        else if (onSea == 1) onSea = 0;
     }
     else if ((keyCode == "a" && heros[0].touche[7] == undefined) || keyCode == heros[0].touche[7]){
         if (edition == 1){
