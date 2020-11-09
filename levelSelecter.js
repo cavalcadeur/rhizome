@@ -1,9 +1,9 @@
 // Fichier pour la selection de l'environnement à explorer. On a besoin de fonctions d'affichage, d'interaction, de changement de mode et de sauvegarde.
 
-let lvlAvailable = [[6,"heart",100],[7,"temple",100]];
+let lvlAvailable = [[6,"heart2",395],[7,"temple",100]];
 let lvlHighlight = 0;
 
-let lvlCompletion = [0,0];
+let lvlCompletion = [1,1];
 let lvlCurrent = 0;
 
 function lvlSelecter(t){
@@ -27,6 +27,15 @@ function lvlSelecter(t){
         lvlHighlight = Math.floor(lvlAvailable.length * mouse[1] / W);
     }
     else lvlHighlight = -1;
+}
+
+function lvlClic(){
+    if (lvlHighlight != -1 && lvlHighlight != lvlCurrent){
+        lvlCurrent = lvlHighlight;
+        onSea = 0;
+        goToLevel(lvlAvailable[lvlHighlight][0],lvlAvailable[lvlHighlight][1],0,0);
+    }
+    else if (lvlHighlight == lvlCurrent) onSea = 0;
 }
 
 function goLvlSelector(){

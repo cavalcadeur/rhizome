@@ -61,6 +61,10 @@ var Map = function(){
             this.updateOutlinesCase(0,0,1);
         },
 
+        eraseMonsters: function(){
+            arbre.deleteAllMonsters();
+        },
+
         goOut: function(n){
             out = n;
         },
@@ -70,7 +74,7 @@ var Map = function(){
         },
 
         updateOutlines: function(){
-
+            
         },
 
         stringToState: function(mapS){
@@ -328,6 +332,12 @@ var mapNode = function(){
         getType: function(){
             // Fonction bête qui renvoie 1 pour dire qu'il sagit d'un node ou 0 s'il s'agit d'un élément.
             return 1;
+        },
+
+        deleteAllMonsters: function(){
+            for (var i = 0;i<4;i++){
+                children[i].deleteAllMonsters();
+            }
         },
 
         getAll: function(x,y){
@@ -669,6 +679,10 @@ var mapElem = function(){
             outlines = liste[4];
         },
 
+        deleteAllMonsters: function(){
+            ennemis = [];
+        },
+        
         getType: function(){
             // Fonction bête qui renvoie le type de la classe à savoir 0
             return 0;
@@ -787,6 +801,8 @@ var mapVide = function(){
         },
 
         updateGround: function(){},
+
+        deleteAllMonsters: function(){},
         
         setObject: function(){},
 

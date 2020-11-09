@@ -42,6 +42,10 @@ function drawCutGrass(e,ctxa){
     ctx.globalAlpha = 1;
 }
 
+function drawGrow(e,ctxa){
+    Painter.imgForPros(ctxa, e.x + 0.1, e.y + 0.5, e.alti, e.n/e.lim, e.n/e.lim, 0, imgElement[e.name], 0, -15);
+}
+
 function drawSwordWall(e,ctxa){
     for (let i = 0; i < e.elem.length; i ++){
         Painter.img( ctxa, e.x + Math.cos(e.elem[i])*e.n/20, e.y, e.alti  + Math.sin(e.elem[i])*e.n/20,imgDebris["swordWallHit"]);

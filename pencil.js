@@ -86,6 +86,9 @@ function pencil(x,y,action){
             Map.eraseAll();
             console.log("------------------------------------------------------------------------------------------------");
         }
+        else if (action == "eraseMonsters"){
+            Map.eraseMonsters();
+        }
         else if (action == "fill" || action == "deFill"){
             let alti = Map.getAlti(coor[1],coor[0]);
             let upping = 1;

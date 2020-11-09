@@ -16,6 +16,12 @@ function findEnnemy(nom,id,x,y,m){
     else if (nom == "chuchu"){
         ennemis[id] = new Chuchu();
     }
+    else if (nom == "herbiA"){
+        ennemis[id] = new HerbiA();
+    }
+    else if (nom == "carniA"){
+        ennemis[id] = new CarniA();
+    }
 
     ennemis[id].create(x,y,m);
 }

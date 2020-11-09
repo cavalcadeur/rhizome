@@ -1,3 +1,10 @@
+// Ici mettre les fonctions pour gérer le drag scroll.
+
+let mouseDOWN = false;
+let oldMousePos = [-1,0,0];
+let scrollDragBuffer = 0;
+const dragBufferLimit = 10;
+
 function clicSword(x,y){
     var distM = Math.abs(x-heros[1].x) + Math.abs(y-heros[1].y);
     if (distM == 1){
@@ -13,6 +20,14 @@ function clicSword(x,y){
     return distM;
 }
 
+function clickDown(){
+    if (mouseDOWN == false) {oldMousePos = [-1,0,0]; scrollDragBuffer = 0;}
+    mouseDOWN = true;
+}
+
+function clickUp(){
+    mouseDOWN = false;
+}
 
 function GPS(x,y){
     // Sert à afficher avec précision les coordonnées d'une case en cliquant dessus

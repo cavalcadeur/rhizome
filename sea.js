@@ -92,6 +92,7 @@ function goToLevel(oo,go,x,y,x2,y2,scrollStore,d,n){
         Painter.adjustScroll(scrollStore,x - vecteurs[d][1],y - vecteurs[d][0],0);
     }
     setColors(out,5);
+    //Map.updateGroundTotal();
     //console.log(respawnPoint);
 }
 
@@ -121,11 +122,11 @@ function chooseBack(oo){
     else if (oo == 5){
         backDraw = backg.fe;
     }
-    else if (oo == 6 || oo == 7){
+    else if (oo == 6){
         backDraw = backg.ff;
     }
-    else if (oo == 4){
-        backDraw = backg.fd;
+    else if (oo == 7){
+        backDraw = backg.fc;
     }
     else if (oo == 8){
         backDraw = backg.fg;

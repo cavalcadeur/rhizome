@@ -287,6 +287,7 @@ function start(){
             let x = event.clientX;
             let y = event.clientY;
             Map.updateGroundTotal();
+            if (onSea == 0 && cinematicos == 0) clickUp();
             if (onSea == 6){
                 clickHelp();
             }
@@ -300,6 +301,7 @@ function start(){
             }
             if (onSea == 4) inventclick(x,y);
             else if (onSea == 5) TPclick(x,y);
+            else if (onSea == 1) lvlClic();
             else if (edition == 0) {
                 growRhizome(x,y,event.button);
                 return;
@@ -307,6 +309,14 @@ function start(){
             if (onSea == 0){
                 clickEdit(x,y,event.button);
             }
+        }
+    );
+    document.addEventListener(
+        "mousedown",
+        function(evt) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (onSea == 0 && cinematicos == 0) clickDown();
         }
     );
     document.addEventListener(

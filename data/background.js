@@ -168,7 +168,8 @@ var background = function(ctx) {
     }
 
     function leafNiveau(e,i){
-        var size = ["rgb(191,0,0)","rgb(29,164,28)","rgb(93,86,206)","rgb(38,147,142)","rgb(253,244,0)","rgb(27,101,82)","rgb(0,209,239)","rgb(12,113,44)","rgb(97,20,66)","rgb(253,244,0)"];
+        //var size = ["rgb(191,0,0)","rgb(29,164,28)","rgb(93,86,206)","rgb(38,147,142)","rgb(253,244,0)","rgb(27,101,82)","rgb(0,209,239)","rgb(12,113,44)","rgb(97,20,66)","rgb(253,244,0)"];
+        let size = ["#054611", "#055013","#05320d","#285a23","#227e23","#054611", "#055013","#05320d","#285a23","#227e23"];
         var co = size[i];
         ctx.fillStyle = co;
         //e[1] += (Math.sin(e[2]/50) - Math.sin((e[2]-1)/50))*20;
@@ -237,7 +238,7 @@ var background = function(ctx) {
     }
 
     function rondNiveau(e){
-        ctx.strokeStyle = "rgb(32,49,154)";
+        ctx.strokeStyle = "rgb(40,28,114)";
         if (e[2] >= 0 && e[2] < 150) ctx.globalAlpha = 1 - e[2]/152;
         if (e[2] < 150){
             for (var i = 0;i < 4;i ++){

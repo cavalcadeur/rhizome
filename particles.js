@@ -54,6 +54,9 @@ function defineParticles(type,x,y,z,g,n,lim,name,carry,sens,objType){
     else if (type == "cutGrass"){
         return({n:n,type:"cutGrass",x:x,y:y,g:g,alti:z,lim:lim,name:name,draw:drawCutGrass,act:limActLeaf,liste:[[0,0],[0,0],[0,0],[0,0],[0,0]]});
     }
+    else if (type == "grow"){
+        return({n:n,type:"grow",x:x,y:y,g:g,alti:z,lim:lim,name:name,draw:drawGrow,act:limActGrow});
+    }
     /*
     else if (type == "fallingGrass"){
         return({n:n,type:"cutGrass",x:x,y:y,g:-0.2,alti:z,lim:lim,name:name,draw:drawCutGrass,act:limActLeaf,liste:[[-0.07,0],[-0.07,0],[-0.06,0],[0,0],[0.1,0]]});
@@ -198,6 +201,14 @@ function blact(truc,i){
 function limAct(e,i){
     e.n += 1;
     if (e.n >= e.lim) suppParticles(i);
+}
+
+function limActGrow(e,i){
+    e.n += 1;
+    if (e.n >= e.lim) {
+        if (Map.getObject(e.x,e.y,0) == e.g) Map.replaceObject(e.x,e.y,e.name,0);
+        suppParticles(i);
+    }
 }
 
 function limActEndless(e,i){

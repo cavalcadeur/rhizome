@@ -18,14 +18,7 @@ function drawRoom(kk,ctxa,map){
 
             drawObj(x,y,f,map.getObject(x,y,true),ctxa);
 
-            if (kk == 1){
-                
-                ennemis.forEach(
-                    function(a,m){
-                        if (a.giveY() == y && a.giveX() == x) drawEnnemi(m);
-                    }
-                );
-            }
+            
             
             if (ennemyRefresh <= 0){
                 if (cell[2].length > 0){
@@ -48,6 +41,14 @@ function drawRoom(kk,ctxa,map){
                 }
 
             }
+        }
+
+        if (kk == 1){    
+            ennemis.forEach(
+                function(a,m){
+                    if (a.giveY() == y) drawEnnemi(m);
+                }
+            );
         }
         
         particles.forEach(
@@ -95,6 +96,7 @@ function takeBackEvent(map){
     // Cette fonction s'occupe aussi des particules.
 
     var listeSup = [];
+    /*
     ennemis.forEach(
         function(a,m){
             var YY = a.giveY();
@@ -110,6 +112,7 @@ function takeBackEvent(map){
         map.addEnnemy(ranger);
         ennemis.splice(listeSup[i],1);
     }
+    */
 
     var listeSup = [];
     particles.forEach(

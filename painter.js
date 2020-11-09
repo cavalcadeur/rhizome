@@ -220,6 +220,20 @@ var Painter = function() {
             ctx.drawImage(img,-img.width/2,-img.height/2);
             ctx.restore();
         },
+        imgForPros: function( ctx, x, y, z, s1, s2, r, img, offSetX, offSetY) {
+            if( !img ) return;
+            //if (ss == undefined) ss = s;
+
+            var X = toX( x, y, z ) + cellS / 2 + (cellX) / 2 - offSetX;
+            var Y = toY( x, y, z ) - img.height/2 - cellY / 2 - offSetY;
+
+            ctx.save();
+            ctx.translate(X,Y);
+            ctx.rotate(r);
+            ctx.scale(s1,s2);
+            ctx.drawImage(img,-img.width/2 + offSetX,-img.height/2 + offSetY);
+            ctx.restore();
+        },
         imgEnnemy: function( ctx, x, y, z, s, r, img ,sy) {
             if( !img ) return;
             if (sy == undefined) sy = 1;

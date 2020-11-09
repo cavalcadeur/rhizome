@@ -7,15 +7,17 @@ let delayLastOne = 0
 
 
 function growRhizome(x,y,button){
+    if (scrollDragBuffer > dragBufferLimit) return;
     let coor = Painter.case(Map,x,y);
     let cell = Map.getCell(coor[1],coor[0]);
     if (cell[1] <= -1) return;
 
-    console.log(cell[0]);
+    //console.log(cell[0]);
 
     if (typeof(cell[0][0]) == "string"){
         if (cell[0][0].indexOf("rhizome") == 0 && cell[0][0] != "rhizome0"){
             Map.suppressObject(coor[1],coor[0],0);
+            addParticles("cutGrass",coor[1],coor[0],cell[1]-0.4,-0.2,0,80,"gardeneer");
             lvlCompletion[lvlCurrent] -= 1;
             return;
         }
@@ -33,7 +35,8 @@ function growRhizome(x,y,button){
                 if (cell[0][0] == "switch0") wireSignal(coor[1],coor[0],1);
                 else if (cell[0][0] == "switch1") wireSignal(coor[1],coor[0],0);
                 else {
-                    Map.setObject(coor[1],coor[0],"rhizome" + (rnd(10) + 1),0);
+                    Map.setObject(coor[1],coor[0],"rhizome11",0);
+                    addParticles("grow",coor[1],coor[0],cell[1],"rhizome11",0,12,"rhizome" + (rnd(10) + 1))
                     lvlCompletion[lvlCurrent] += 1;
                 }
                 return;
@@ -75,36 +78,52 @@ function manageDelayedEvent(e){
 }
 
 function action(t){
-    //if (edition == 1) return;
     // Partie mouvement de la caméra yalalala lala. La.
-    if ((mouse[0] < 25 && mouse[0] > 0 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[0]]) {
-        scrollEditSpeed[1] += scrollEditSpeed[2];
+
+    // Dans un premier temps, souris :
+    if (mouseDOWN){
+        if (oldMousePos[0] == -1) oldMousePos = [0,mouse[1],mouse[0]];
+        else{
+            let goals = [mouse[1] - oldMousePos[1],mouse[0] - oldMousePos[2]];
+            if (oldMousePos[0] == 0) scrollDragBuffer = 0;
+            for (let i = 0; i < 2; i ++){
+                if (oldMousePos[0] == 1) scrollEditSpeed[i] = goals[i];
+                else scrollDragBuffer += Math.abs(goals[i]);
+            }
+            if (oldMousePos[0] == 1) { oldMousePos[2] = mouse[0]; oldMousePos[1] = mouse[1];}
+            else if (scrollDragBuffer > dragBufferLimit) oldMousePos[0] = 1;
+        }
     }
-    else if ((mouse[0] > H - 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[2]]){
-        scrollEditSpeed[1] -= scrollEditSpeed[2];
-    }
-    else if (scrollEditSpeed[1] != 0){
-        if (scrollEditSpeed[1] > 0) scrollEditSpeed[1] -= scrollEditSpeed[2];
-        if (scrollEditSpeed[1] < 0) scrollEditSpeed[1] += scrollEditSpeed[2];
-        if (Math.abs(scrollEditSpeed[1]) < scrollEditSpeed[2]) scrollEditSpeed[1] = 0;
-    }
-    scrollEditSpeed[1] = Math.min(scrollEditSpeed[3],scrollEditSpeed[1]);
-    scrollEditSpeed[1] = Math.max(-1 * scrollEditSpeed[3],scrollEditSpeed[1]);
-        
-    if ((mouse[1] < 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[3]]) {
-        scrollEditSpeed[0] += scrollEditSpeed[2];
-    }
-    else if ((mouse[1] > W - 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[1]]){
-        scrollEditSpeed[0] -= scrollEditSpeed[2];
-    }
-    else if (scrollEditSpeed[0] != 0){
-        if (scrollEditSpeed[0] > 0) scrollEditSpeed[0] -= scrollEditSpeed[2];
-        if (scrollEditSpeed[0] < 0) scrollEditSpeed[0] += scrollEditSpeed[2];
-        if (Math.abs(scrollEditSpeed[0]) < scrollEditSpeed[2]) scrollEditSpeed[0] = 0;
-    }
-    scrollEditSpeed[0] = Math.min(scrollEditSpeed[3],scrollEditSpeed[0]);
-    scrollEditSpeed[0] = Math.max(-1 * scrollEditSpeed[3],scrollEditSpeed[0]);
+    else{
     
+        if ((mouse[0] < 25 && mouse[0] > 0 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[0]]) {
+            scrollEditSpeed[1] += scrollEditSpeed[2];
+        }
+        else if ((mouse[0] > H - 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[2]]){
+            scrollEditSpeed[1] -= scrollEditSpeed[2];
+        }
+        else if (scrollEditSpeed[1] != 0){
+            if (scrollEditSpeed[1] > 0) scrollEditSpeed[1] -= scrollEditSpeed[2];
+            if (scrollEditSpeed[1] < 0) scrollEditSpeed[1] += scrollEditSpeed[2];
+            if (Math.abs(scrollEditSpeed[1]) < scrollEditSpeed[2]) scrollEditSpeed[1] = 0;
+        }
+        scrollEditSpeed[1] = Math.min(scrollEditSpeed[3],scrollEditSpeed[1]);
+        scrollEditSpeed[1] = Math.max(-1 * scrollEditSpeed[3],scrollEditSpeed[1]);
+        
+        if ((mouse[1] < 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[3]]) {
+            scrollEditSpeed[0] += scrollEditSpeed[2];
+        }
+        else if ((mouse[1] > W - 25 && parameters.mouseScrollPencil) || 1 == keys[heros[0].touche[1]]){
+            scrollEditSpeed[0] -= scrollEditSpeed[2];
+        }
+        else if (scrollEditSpeed[0] != 0){
+            if (scrollEditSpeed[0] > 0) scrollEditSpeed[0] -= scrollEditSpeed[2];
+            if (scrollEditSpeed[0] < 0) scrollEditSpeed[0] += scrollEditSpeed[2];
+            if (Math.abs(scrollEditSpeed[0]) < scrollEditSpeed[2]) scrollEditSpeed[0] = 0;
+        }
+        scrollEditSpeed[0] = Math.min(scrollEditSpeed[3],scrollEditSpeed[0]);
+        scrollEditSpeed[0] = Math.max(-1 * scrollEditSpeed[3],scrollEditSpeed[0]);
+    }
     Painter.scrollPlus(scrollEditSpeed[0],scrollEditSpeed[1],W,H);
     if (edition == 1) return;
 
@@ -115,7 +134,14 @@ function action(t){
         delayedEvents.forEach(manageDelayedEvent);
         delayedEvents = JSON.parse(JSON.stringify(nextDelayedEvents));
         nextDelayedEvents = [];
-    }    
+    }
+
+    ennemis.forEach(
+        function(a,m){
+            a.doing();
+        }
+    );
+    
 }
 
 function fall(h,n){
