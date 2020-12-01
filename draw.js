@@ -1,9 +1,10 @@
 // Ce fichier contient toutes les fonctions de dessins. Ces fonctions servent à dessiner concretement le jeu durant les phases en vue de dessus qui sont quasiment les seules phases
 // Il y a ici les fonctions drawRoom() draw() drawHeros() drawEnnemi() drawInterface()
 
-let param = {antiClip:5};
+let param = {antiClip:5,help:true};
 
-function drawRoom(kk,ctxa,map){
+function drawRoom(kk,ctxa,map,t){
+    let gonnaHelp = param.help;
     for(var y = scrollCaseY;y < scrollCaseY + nCasesY;y++){
         for(var x = scrollCaseX; x < scrollCaseX + nCasesX ;x++){
             let cell = map.getCell(x,y); 
@@ -13,10 +14,11 @@ function drawRoom(kk,ctxa,map){
             if (outline[2] == undefined){        // A n'activer qu'en cas de besoin
                 map.updateOutlinesCase(x,y,0);  //  Cela sert à remettre d'aplomb des données qui seraient partielles
             }
-             */
+            */
+            gonnaHelp = gonnaHelp && (f == -1);
             Painter.cell( ctxa, x, y, f ,0 , outline);
 
-            drawObj(x,y,f,map.getObject(x,y,true),ctxa);
+            drawObj(x,y,f,cell[0],ctxa, t);
 
             
             
@@ -54,12 +56,14 @@ function drawRoom(kk,ctxa,map){
         particles.forEach(
             function(kgb,iii){
                 if (y == Math.ceil(kgb.y)){
-                    kgb.draw(kgb,ctxa);
+                    kgb.draw(kgb,ctxa,t);
                     kgb.act(kgb,iii);
                 }
             }
         );
     }
+
+    if (gonnaHelp && cinematicos == 0 && onSea == 0) {alert("Si vous êtes perdu, n'hésitez pas à appuyer sur i puis à sélectionner sur une zone pour recentrer la caméra."); param.help = false; mouseDOWN = false;}
 
     //ctx.globalAlpha = 1;
     
@@ -84,7 +88,7 @@ function drawRoom(kk,ctxa,map){
                 */
                 Painter.cell( ctxa, x, y, f ,0 , outline);
                 
-                drawObj(x,y,f,map.getObject(x,y,true),ctxa);
+                drawObj(x,y,f,map.getObject(x,y,true),ctxa, t);
             }
         }
     }
@@ -117,8 +121,12 @@ function takeBackEvent(map){
     var listeSup = [];
     particles.forEach(
         function(a,m){
+            
             if (a.y >= scrollCaseY + nCasesY || a.x >= scrollCaseX + nCasesX || a.x < scrollCaseX || a.y < scrollCaseY) {
-                listeSup.splice(0,0,m);
+                if (a.unkillable){
+                    a.act(a,m);
+                }
+                else listeSup.splice(0,0,m);
             }
         }
     );
@@ -130,13 +138,13 @@ function takeBackEvent(map){
     }
 }
 
-function draw() {
+function draw(t) {
     // Cette fonction coordonne le dessin lors des phases de jeu sur le sol Elle appelle backDraw() pour le fond drawRoom() pour le niveau et drawInterface() pour l'interface
     ctx.fillStyle = colors[0];
     ctx.fillRect(0,0,W,H);
     backDraw();
     
-    drawRoom(1,ctx,Map);
+    drawRoom(1,ctx,Map,t);
 
     if (casePencil[1] != "ah"){
         ctx.globalAlpha = 0.2;

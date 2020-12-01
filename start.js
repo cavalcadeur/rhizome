@@ -10,7 +10,7 @@ let Y = 0;
 let keys = {};
 let heros = [{"touche":["ArrowUp","ArrowRight","ArrowDown","ArrowLeft","Shift","Control"," ","a","i"]}];
 let questObj = {"carteMaritime":0,"boussole":0,wear:0};
-let parameters = {mouseScrollPencil:false};
+let parameters = {mouseScrollPencil:false,clicDisalert:true};
 let objInvent = [];
 let seaLimit = [1200,900];
 let ennemis = [];
@@ -87,7 +87,7 @@ let scrollCaseX = 0;
 let scrollCaseY = 0;
 let scrollEditSpeed = [0,0,1,20]; // [vitesseX,vitesseY,acceleration,max]
 let ennemyRefresh = 0;
-let ennemyRefreshLim = 60;
+let ennemyRefreshLim = 0;
 
 // programme
 
@@ -426,7 +426,7 @@ function animation(){
             try {
                 //let loops = 1;
                 //while( loops --> 0 ) {
-                if (onSea == 0) {action(t); draw();gamePadF();}
+                if (onSea == 0) {action(t); draw(t);gamePadF();}
                 else if (onSea == 1){lvlSelecter(t);gamePadF();}
                 else if (onSea == 2) {drawSea();gamePadF();}
                 else if (onSea == 4) {drawInvent();gamePadF();}

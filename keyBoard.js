@@ -40,7 +40,7 @@ function keyUp(keyCode){
         return;
     }
     if (alerting == 1 || cinematicos == 11) {
-        //disalert();
+        if (alerting == 1) disalert();
         return;
     }
     if (keyCode == heros[0].touche[5] && onSea == 0) changeArme(0);

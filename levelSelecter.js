@@ -1,8 +1,10 @@
 // Fichier pour la selection de l'environnement à explorer. On a besoin de fonctions d'affichage, d'interaction, de changement de mode et de sauvegarde.
 
-let lvlAvailable = [[6,"heart2",395],[7,"temple",100]];
+let lvlAvailable = [[6,"heart2",395]];
 let lvlHighlight = 0;
 
+let unlockableLvl = [[7,"temple",100]];
+// ,[7,"temple",100]
 let lvlCompletion = [1,1];
 let lvlCurrent = 0;
 
@@ -35,9 +37,17 @@ function lvlClic(){
         onSea = 0;
         goToLevel(lvlAvailable[lvlHighlight][0],lvlAvailable[lvlHighlight][1],0,0);
     }
-    else if (lvlHighlight == lvlCurrent) onSea = 0;
+    else if (lvlHighlight == lvlCurrent) { onSea = 0; Painter.centerScroll(0,0,0,W,H);}
 }
 
 function goLvlSelector(){
     onSea = 1;
+}
+
+function addLvlToSelector(level){
+    for (let i = 0;i < lvlAvailable.length; i ++){
+        if (lvlAvailable[i][0] == unlockableLvl[level][0] && lvlAvailable[i][1] == unlockableLvl[level][1]) return;
+    }
+    lvlAvailable.push(unlockableLvl[level]);
+    alert("Vous avez gagné accès à une nouvelle zone ! Appuyez sur i pour changer de zone.");
 }

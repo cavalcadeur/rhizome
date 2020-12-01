@@ -34,11 +34,28 @@ function drawQuakePP(e){
     Painter.drawQuake(e.n,e.ampli);
 }
 
+function drawPafBubble(e,ctxa,t){
+    if (e.n == 0 && t != undefined) e.alti += Math.sin(t/500)/3
+    Painter.img(ctxa, e.x, e.y, e.alti, imgDebris["pafBubble"]);
+}
+
+function drawSouffle(e,ctxa){
+    if (e.n >= 10){
+        Painter.img(ctxa, e.x + 0.1, e.y + 0.5, e.alti, imgDebris["souffle" + Math.floor((e.n - 10) / 4)]);
+    }
+}
+
 function drawCutGrass(e,ctxa){
     if (e.lim - e.n < 10) ctxa.globalAlpha = (e.lim - e.n)/10; 
     for (let i = 0;i < e.liste.length; i++){
         Painter.img( ctxa, e.x + e.liste[i][0], e.y, e.liste[i][1] + e.alti, imgDebris[e.name + i]);
     }
+    ctx.globalAlpha = 1;
+}
+
+function drawFlySeed(e,ctxa){
+    if (e.lim - e.n < 5) ctxa.globalAlpha = (e.lim - e.n)/5;
+    Painter.img(ctxa, e.x, e.y, e.alti + 1.8 - 2*e.n/e.lim,imgDebris[e.name + Math.floor((e.n%8)/4)])
     ctx.globalAlpha = 1;
 }
 

@@ -5,6 +5,7 @@ let nextDelayedEvents = [];
 let delaySec = 20;
 let delayLastOne = 0
 
+let powerUps = {"itemFly":false};
 
 function growRhizome(x,y,button){
     if (scrollDragBuffer > dragBufferLimit) return;
@@ -15,9 +16,10 @@ function growRhizome(x,y,button){
     //console.log(cell[0]);
 
     if (typeof(cell[0][0]) == "string"){
-        if (cell[0][0].indexOf("rhizome") == 0 && cell[0][0] != "rhizome0"){
+        if (cell[0][0].indexOf("rhizome") == 0){
+            if (cell[0][0] == "rhizome0") return;
             Map.suppressObject(coor[1],coor[0],0);
-            addParticles("cutGrass",coor[1],coor[0],cell[1]-0.4,-0.2,0,80,"gardeneer");
+            addParticles("cutGrass",coor[1],coor[0],cell[1]-0.6,-0.2,0,40,"gardeneer");
             lvlCompletion[lvlCurrent] -= 1;
             return;
         }
@@ -32,16 +34,43 @@ function growRhizome(x,y,button){
         if (typeof(cell2[0][0]) != "string") continue;
         if (cell2[0][0].indexOf("rhizome") == 0){
             if (Math.abs(cell2[1] - cell[1]) <= 1){
-                if (cell[0][0] == "switch0") wireSignal(coor[1],coor[0],1);
+                if (cell[0][0] == "switch0" || cell[0][0] == "wireBalloon1") wireSignal(coor[1],coor[0],1);
                 else if (cell[0][0] == "switch1") wireSignal(coor[1],coor[0],0);
+                else if (cell[0][0] == "porteTemple1") {
+                    Map.replaceObject(coor[1],coor[0],"porteTemple1-2",0);
+                    addLvlToSelector(0);
+                }
+                else if (cell[0][0] == "itemBubble"){
+                    powerUps[cell[0][1]] = true;
+                    Map.suppressObject(coor[1],coor[0],0);
+                    Map.suppressObject(coor[1],coor[0],0);
+                    addParticles("pafBubble",coor[1],coor[0],cell[1],"",0,10);
+                }
                 else {
                     Map.setObject(coor[1],coor[0],"rhizome11",0);
                     addParticles("grow",coor[1],coor[0],cell[1],"rhizome11",0,12,"rhizome" + (rnd(10) + 1))
+                    //addParticles("flySeed",coor[1],coor[0],cell[1],"rhizome11",0,30,"flyDown")
                     lvlCompletion[lvlCurrent] += 1;
                 }
                 return;
             }
         }        
+    }
+    if (powerUps.itemFly){
+        for (let i = 0; i < 4; i ++){
+            cell2 = Map.getCell(coor[1] + vecteurs[i][0],coor[0] + vecteurs[i][1]);
+            if (typeof(cell2[0][0]) != "string") continue;
+            if (cell2[0][0].indexOf("rhizome") == 0){
+                if (cell[0][0] == "switch0" || cell[0][0] == "switch1" || cell[0][0] == "porteTemple1") return;
+                else {
+                    Map.setObject(coor[1],coor[0],"rhizome11",0);
+                    //addParticles("grow",coor[1],coor[0],cell[1],"rhizome11",0,12,"rhizome" + (rnd(10) + 1))
+                    addParticles("flySeed",coor[1],coor[0],cell[1],"rhizome11",0,30,"flyDown")
+                    lvlCompletion[lvlCurrent] += 1;
+                }
+                return;
+            }
+        }
     }
 }
 
@@ -53,6 +82,9 @@ function wireSignal(x,y,onOff){
         if (cell[0][0].indexOf("wire") == 0){
             if (cell[0][0] == "wire" + (1 - onOff)) Map.replaceObject(x,y,"wire" + onOff,0);
             else if (cell[0][0] == "wireGate" + (1 - onOff)) Map.replaceObject(x,y,"wireGate" + onOff,0);
+            else if (cell[0][0] == "wireWall" + (1 - onOff)) Map.replaceObject(x,y,"wireWall" + onOff,0);
+            else if (cell[0][0] == "wireBalloon0" && onOff == 0) {Map.replaceObject(x,y,"wireBalloon1",0); return;}
+            else if (cell[0][0] == "wireBalloon1" && onOff == 1) {addParticles("balloonExplode",x,y,cell[1],0,5,30,"wireBalloon0"); Map.replaceObject(x,y,"wireBalloon2",0); return;}
             else return;
         }
         else if (cell[0][0] == "switch" + (1 - onOff)) Map.replaceObject(x,y,"switch" + onOff,0);        
@@ -65,7 +97,7 @@ function wireSignal(x,y,onOff){
         cell2 = Map.getCell(x + vecteurs[i][0],y + vecteurs[i][1]);
         if (typeof(cell2[0][0]) == "string"){
             if (cell2[0][0].indexOf("wire") == 0) {
-                if (cell2[0][0] == "wire" + (1-onOff) || cell2[0][0] == "wireGate" + (1-onOff)) nextDelayedEvents.push(["wireSignal",x + vecteurs[i][0],y + vecteurs[i][1],onOff]);
+                if (cell2[0][0] == "wire" + (1-onOff) || cell2[0][0] == "wireGate" + (1-onOff) || cell2[0][0] == "wireWall" + (1-onOff) || cell2[0][0] == "wireBalloon" + onOff) nextDelayedEvents.push(["wireSignal",x + vecteurs[i][0],y + vecteurs[i][1],onOff]);
             }
         }
     }

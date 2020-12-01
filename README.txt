@@ -1,4 +1,4 @@
-**Comment jouer à Wind Waker 2D**
+**Comment jouer à Rhizome**
 
 *Version offline*
 
@@ -6,4 +6,4 @@
 
 *version en ligne*
 
- Pour jouer au jeu directement sur internet, il faut simplement se rendre à cette adresse sur un navigateur web (firefox ou chrome sont vivement conseillés) : cavalcadeur.github.io/zelda_maker
+ Pour jouer au jeu directement sur internet, il faut simplement se rendre à cette adresse sur un navigateur web (firefox ou chrome sont vivement conseillés) : cavalcadeur.github.io/rhizome

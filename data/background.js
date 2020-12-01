@@ -155,7 +155,7 @@ var background = function(ctx) {
         ctx.lineTo(0,10);
         ctx.closePath();
         ctx.fill();
-        
+        /*
         ctx.fillStyle = colors[0];
         ctx.beginPath();
         ctx.moveTo(-5,0);
@@ -164,7 +164,7 @@ var background = function(ctx) {
         ctx.lineTo(0,5);
         ctx.closePath();
         ctx.fill();
-        
+        */
     }
 
     function leafNiveau(e,i){

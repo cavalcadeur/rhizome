@@ -99,6 +99,7 @@ function cTitre(){
         else if (imgCinema[1] == "salsonForever"){
             goToLevel(6,"heart2",2,6,0,0);
             cinematicos = 0;
+            alert("Bienvenue dans Rhizome ! Cliquez sur une case adjacente à votre plante pour grandir et vous étendre. Contrôlez toute les surfaces possibles. Vous pouvez vérifier votre progression en appuyant sur i. Bon jeu !");
             animation();
         }
         else {

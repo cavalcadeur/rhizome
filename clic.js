@@ -26,6 +26,10 @@ function clickDown(){
 }
 
 function clickUp(){
+    resize();
+    if (alerting == 1 && mouseDOWN && parameters.clicDisalert && mouse[0] > 0.7*H) {
+        disalert();
+    }
     mouseDOWN = false;
 }
 

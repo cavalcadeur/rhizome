@@ -57,6 +57,12 @@ function defineParticles(type,x,y,z,g,n,lim,name,carry,sens,objType){
     else if (type == "grow"){
         return({n:n,type:"grow",x:x,y:y,g:g,alti:z,lim:lim,name:name,draw:drawGrow,act:limActGrow});
     }
+    else if (type == "flySeed"){
+        return({n:n,type:"flySeed",x:x,y:y,g:g,alti:z,lim:lim,name:name,draw:drawFlySeed,act:limActChainPart,nextPart:["grow",x,y,z,g,0,12,"rhizome" + (rnd(10) + 1)]});
+    }
+    else if (type == "pafBubble"){
+        return({n:n,type:"pafBubble",x:x,y:y,g:g,alti:z,lim:lim,name:name,draw:drawPafBubble,act:limAct});
+    }
     /*
     else if (type == "fallingGrass"){
         return({n:n,type:"cutGrass",x:x,y:y,g:-0.2,alti:z,lim:lim,name:name,draw:drawCutGrass,act:limActLeaf,liste:[[-0.07,0],[-0.07,0],[-0.06,0],[0,0],[0.1,0]]});
@@ -66,6 +72,7 @@ function defineParticles(type,x,y,z,g,n,lim,name,carry,sens,objType){
         return({n:n,type:"flower",x:x,y:y,g:g,alti:z,lim:lim,draw:drawFlower,act:limAct});
         //particles[particles.length-1].draw = drawSword;
     }
+    else if (type == "balloonExplode") return ({n:n,type:type,x:x,y:y,g:g,alti:z,lim:lim,name:name,draw:drawSouffle,act:limActSouffle,unkillable:true});
     else if (type == "rond" || type == "rondB"){
         return({n:n,type:type,x:x,y:y,g:g,alti:z,lim:lim,draw:drawRond,act:limAct,s:name});
         //particles[particles.length-1].draw = drawSword;
@@ -203,10 +210,37 @@ function limAct(e,i){
     if (e.n >= e.lim) suppParticles(i);
 }
 
+function limActChainPart(e,i){
+    e.n += 1;
+    if (e.n >= e.lim) {
+        suppParticles(i);
+        particles.push(composeParticle(e.nextPart));
+    }
+}
+
 function limActGrow(e,i){
     e.n += 1;
     if (e.n >= e.lim) {
         if (Map.getObject(e.x,e.y,0) == e.g) Map.replaceObject(e.x,e.y,e.name,0);
+        suppParticles(i);
+    }
+}
+
+function limActSouffle(e,i){
+    e.n += 1;
+    if (e.n == 10) Map.replaceObject(e.x,e.y,e.name,0);
+    if (e.n >= e.lim) {
+        e.x = Math.round(e.x);
+        e.y = Math.round(e.y);
+        let cell2;
+        for (let i = 0; i < 4; i ++){
+            cell2 = Map.getCell(e.x + vecteurs[i][0],e.y + vecteurs[i][1]);
+            if (Math.abs(e.alti - cell2[1]) <= 1.5){
+                if (cell2[0][0] == "switch0" || cell2[0][0] == "wireBalloon1") wireSignal(e.x + vecteurs[i][0],e.y + vecteurs[i][1],1);
+            }
+            //else if (cell2[0][0] == "switch1") wireSignal(e.x + vecteurs[i][0],e.y + vecteurs[i][1],0);
+        }
+        // Ici probablement ajouter des effets de conséquences sur les voisins.
         suppParticles(i);
     }
 }
